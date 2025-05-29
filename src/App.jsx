@@ -1,42 +1,43 @@
-import {
-  Sidebar,
-  SidebarProvider,
-  SidebarHeader,
-  SidebarContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-} from "@/components/ui/sidebar";
-
-import { Home, Settings } from "lucide-react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+//import Login from "./page/Login";
+import Menu from "./page/Menu";
+//import EstablishmentsSelect from "./page/BranchesSelect";
+//import "./App.css";
+import { ProtectedRoute } from "./page/ProtectedRoute";
+// import { RedirectAuth } from "./page/RedirectAuth ";
+// import { RedirectEstablishments } from "./page/RedirectEstablishments ";
 
 function App() {
   return (
-    <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader>
-          <h2 className="text-lg font-bold">Mi Sistema</h2>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton isActive icon={Home}>
-                Inicio
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton icon={Settings}>
-                Configuración
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-      </Sidebar>
+    <>
+      <Routes>
+        {/* <Route element={<RedirectAuth />}>
+          <Route path="/" element={<Login />} />
+        </Route>
 
-      <main className="flex-1 p-6">
-        <h1 className="text-2xl font-bold">Contenido Principal</h1>
-      </main>
-    </SidebarProvider>
+        <Route element={<RedirectEstablishments />}>
+          <Route path="/establecimiento/*" element={<EstablishmentsSelect />} />
+        </Route> */}
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/menu/*" element={<Menu />} />
+        </Route>
+        {/* Redirección automática de "/" a "/menu" */}
+        {/* <Route path="/" element={<Navigate to="/menu" replace />} /> */}
+      </Routes>
+      <ToastContainer
+        position="top-right"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+    </>
   );
 }
 
