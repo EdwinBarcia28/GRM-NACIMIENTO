@@ -80,9 +80,9 @@ export function NavMain({ menu = [] }) {
         </SidebarMenuItem>
         <SidebarMenuItem>
           <SidebarMenuButton asChild>
-            <Link to={"/menu/perfil"}>
-              <Icons.User />
-              Perfil
+            <Link to={"/menu/nacimiento"}>
+              <Icons.Baby />
+              Nacimiento
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>

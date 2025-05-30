@@ -1,6 +1,7 @@
 import { AppSidebar } from "@/components/Menu/AppSidebar";
-import {  SidebarProvider } from "@/components/ui/sidebar";
-// import { Route, Routes } from "react-router-dom";
+import {  SidebarProvider ,SidebarInset } from "@/components/ui/sidebar";
+import Nacimiento from "./Nacimiento";
+import { Route, Routes } from "react-router-dom";
 // import Product from "./IdRoot/Product";
 // import Client from "./IdRoot/Client";
 // import Driver from "./IdRoot/Driver";
@@ -16,14 +17,13 @@ import {  SidebarProvider } from "@/components/ui/sidebar";
 
 function Menu() {
   return (
-    <SidebarProvider defaultOpen={true}>
-      <div className="flex min-h-screen bg-background text-foreground">
-        <AppSidebar />
-        <div className="flex-1 p-6">
-          <h1 className="text-2xl font-bold">Bienvenido al sistema</h1>
-          <p>Este es el contenido principal.</p>
-        </div>
-      </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <Routes>
+          <Route path="/nacimiento" element={<Nacimiento />} />
+        </Routes>
+      </SidebarInset>
     </SidebarProvider>
   );
 }
