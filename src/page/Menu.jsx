@@ -1,6 +1,6 @@
 import { AppSidebar } from "@/components/Menu/AppSidebar";
 import {  SidebarProvider ,SidebarInset } from "@/components/ui/sidebar";
-import Nacimiento from "./Nacimiento";
+import Nacimiento from "./Nacimiento/Nacimiento";
 import { Route, Routes } from "react-router-dom";
 // import Product from "./IdRoot/Product";
 // import Client from "./IdRoot/Client";
@@ -21,7 +21,7 @@ function Menu() {
       <AppSidebar />
       <SidebarInset>
         <Routes>
-          <Route path="/nacimiento" element={<Nacimiento />} />
+          <Route path="/nacimiento/nueva-inscripcion" element={<Nacimiento />} />
         </Routes>
       </SidebarInset>
     </SidebarProvider>

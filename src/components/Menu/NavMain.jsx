@@ -78,14 +78,44 @@ export function NavMain({ menu = [] }) {
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
-        <SidebarMenuItem>
+        <Collapsible className="group/collapsible">
+          <SidebarMenuItem>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton tooltip="Nacimiento">
+                <Icons.Baby />
+                <span>Nacimiento</span>
+                <Icons.ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <SidebarMenuSub>
+                <SidebarMenuSubItem key="nueva-inscripcion">
+                  <SidebarMenuSubButton asChild isActive={location.pathname === "/menu/nacimiento/nueva-inscripcion"}>
+                    <Link to="/menu/nacimiento/nueva-inscripcion">
+                      Nueva Inscripción
+                    </Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+                <SidebarMenuSubItem key="ingresar-refolio">
+                  <SidebarMenuSubButton asChild isActive={location.pathname === "/menu/nacimiento/ingresar-refolio"}>
+                    <Link to="/menu/nacimiento/ingresar-refolio">
+                      Ingresar Refolio
+                    </Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              </SidebarMenuSub>
+            </CollapsibleContent>
+          </SidebarMenuItem>
+        </Collapsible>
+
+        {/* <SidebarMenuItem>
           <SidebarMenuButton asChild>
             <Link to={"/menu/nacimiento"}>
               <Icons.Baby />
               Nacimiento
             </Link>
           </SidebarMenuButton>
-        </SidebarMenuItem>
+        </SidebarMenuItem> */}
         <SidebarMenuItem>
           <SidebarMenuButton asChild>
             <Link onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
