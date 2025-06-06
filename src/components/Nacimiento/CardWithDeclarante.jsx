@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ArrowRigthNacimiento } from "./ArrowRigthNacimiento";
 
 export const CardWithDeclarante = () => {
   const { dataUser } = useAuthStore();
@@ -115,7 +116,8 @@ export const CardWithDeclarante = () => {
           <div className="col-span-2">
             <div className="grid grid-cols-2 gap-4">
               <DialogRefreshProfile />
-              <DialogAcceptProfile />
+              <ArrowRigthNacimiento />  
+              {/* <DialogAcceptProfile /> */}
             </div>
           </div>
         </div>
