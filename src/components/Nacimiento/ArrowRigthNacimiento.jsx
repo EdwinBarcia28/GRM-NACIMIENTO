@@ -13,7 +13,7 @@ export const ArrowRigthNacimiento = ({ handleClickAcceptProfile }) => {
   const { isMobile } = useSidebar();
 
   return (
-    <Button>
+    <Button onClick={handleClickAcceptProfile}>
       {isMobile ? (
         <TooltipProvider>
           <Tooltip>

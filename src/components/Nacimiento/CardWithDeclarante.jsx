@@ -1,9 +1,7 @@
-import { useAuthStore } from "@/store/auth";
 import { Search } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { DialogTrigger } from "@/components/ui/dialog";
 import {
   Card,
   CardContent,
@@ -22,9 +20,95 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ArrowRigthNacimiento } from "./ArrowRigthNacimiento";
+import { useNacimientoStore } from "@/store/Nacimiento/nacimientoStore";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
-export const CardWithDeclarante = () => {
-  const { dataUser } = useAuthStore();
+export const CardWithDeclarante = ({ irAlSiguienteTab }) => {
+
+  // REGION PARA GUARDAR STORE
+  const { guardarDatosDeclarante } = useNacimientoStore();
+
+  const { datosDeclarante } = useNacimientoStore();
+  console.log(datosDeclarante);
+  
+
+  // REGION PARA GUARDAR DATOS DEL DECLARANTE
+  const [tipoDeclarante, setTipoDeclarante] = useState("");
+  const [apellidos, setApellidos] = useState("");
+  const [nombres, setNombres] = useState("");
+  const [tipoDocumento, setTipoDocumento] = useState("1");
+  const [numeroDocumento, setNumeroDocumento] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState(() => {
+    const hoy = new Date();
+    return hoy.toISOString().split("T")[0];
+  });
+  const [tipoSexo, setTipoSexo] = useState("1");
+  const [tipoNacionalidad, setTipoNacionalidad] = useState("1");
+  const [tipoEstadoCivil, setTipoEstadoCivil] = useState("1");
+
+  // REGION DE ONCHANGE PARA LOS INPUTS
+  const handleApellidosChange = (event) => {
+    setApellidos(event.target.value);
+  }
+
+  const handleNombresChange = (event) => {
+    setNombres(event.target.value);
+  }
+
+  const handleNumeroDocumentoChange = (event) => {
+    setNumeroDocumento(event.target.value);
+  }
+
+  const handleFechaNacimientoChange = (e) => {
+    setFechaNacimiento(e.target.value); // e.g. "2025-06-03"
+  };
+
+  const handleGuardarSeccion = () => {
+    
+
+    if (!tipoDeclarante) {
+      return toast.error("Debe seleccionar el Tipo de Declarante", { position: "top-right" });
+    }
+    if (!apellidos) {
+      return toast.error("Debe ingresar los Apellidos", { position: "top-right" });
+    }
+    if (!nombres) {
+      return toast.error("Debe ingresar los Nombres", { position: "top-right" });
+    }
+    if (!tipoDocumento) {
+      return toast.error("Debe ingresar el Tipo de Documento", { position: "top-right" });
+    }
+    if (!numeroDocumento) {
+      return toast.error("Debe ingresar el Número de Documento", { position: "top-right" });
+    }
+    if (!fechaNacimiento) {
+      return toast.error("Debe ingresar la Fecha de Nacimiento", { position: "top-right" });
+    }
+    if (!tipoSexo) {
+      return toast.error("Debe ingresar el Sexo", { position: "top-right" });
+    }
+    if (!tipoNacionalidad) {
+      return toast.error("Debe ingresar la Nacionalidad", { position: "top-right" });
+    }
+    if (!tipoEstadoCivil) {
+      return toast.error("Debe ingresar el Estado Civil", { position: "top-right" });
+    }
+
+    guardarDatosDeclarante({
+      tipoDeclarante,
+      apellidos,
+      nombres,
+      tipoDocumento,
+      numeroDocumento,
+      fechaNacimiento,
+      tipoSexo,
+      tipoNacionalidad,
+      tipoEstadoCivil,
+    });
+
+    irAlSiguienteTab();
+  };
 
   return (
     <Card>
@@ -35,13 +119,11 @@ export const CardWithDeclarante = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {/* Fila Select + RadioGroup */}
         <div className="grid grid-cols-3 gap-5">
-          {/* Select: Tipo de Declarante */}
           <div className="flex flex-col space-y-1.5 ">
             <Label htmlFor="filterClient">Tipo de Declarante</Label>
-            <Select id="filterClient" name="filterClient">
-              <SelectTrigger id="filterClient" name="filterClient">
+            <Select onValueChange={setTipoDeclarante} value={tipoDeclarante}>
+              <SelectTrigger>
                 <SelectValue placeholder="Seleccione un Declarante" />
               </SelectTrigger>
               <SelectContent>
@@ -77,19 +159,38 @@ export const CardWithDeclarante = () => {
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="apellidos">Apellidos</Label>
-            <Input id="apellidos" placeholder="Ingrese los apellidos" />
+            <Input 
+              placeholder="Ingrese los apellidos"
+              value={apellidos} 
+              onChange={handleApellidosChange}/>
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="nombres">Nombres</Label>
-            <Input id="nombres" placeholder="Ingrese los nombres" />
+            <Input 
+              placeholder="Ingrese los nombres" 
+              value={nombres}
+              onChange={handleNombresChange}
+              />
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="tipoDocumento">Tipo de Documento</Label>
-            <Input id="tipoDocumento" placeholder="Ej: Cédula, Pasaporte" />
+            <Select onValueChange={setTipoDocumento} value={tipoDocumento} >
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccione un Tipo de Documento" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">Cedula</SelectItem>
+                <SelectItem value="2">Ruc</SelectItem>
+                <SelectItem value="3">Pasaporte</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="numeroDocumento">Número de Documento</Label>
-            <Input id="numeroDocumento" placeholder="Ingrese número de documento" />
+            <Input 
+              placeholder="Ingrese número de documento"
+              value={numeroDocumento}
+              onChange={handleNumeroDocumentoChange} />
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="fechaNacimiento">Fecha de Nacimiento</Label>
@@ -97,26 +198,56 @@ export const CardWithDeclarante = () => {
               id="fechaNacimiento"
               type="date"
               className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              value={fechaNacimiento}
+              onChange={handleFechaNacimientoChange}
+              max={new Date().toISOString().split("T")[0]} // opcional para evitar fechas futuras
             />
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="sexo">Sexo</Label>
-            <Input id="sexo" placeholder="Masculino / Femenino" />
+            <Select onValueChange={setTipoSexo} value={tipoSexo} >
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccione Sexo" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">Masculino</SelectItem>
+                <SelectItem value="2">Femenino</SelectItem>
+                <SelectItem value="3">Otros</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="nacionalidad">Nacionalidad</Label>
-            <Input id="nacionalidad" placeholder="Ingrese nacionalidad" />
+            <Select onValueChange={setTipoNacionalidad} value={tipoNacionalidad} >
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccione Nacionalidad" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">Ecuador</SelectItem>
+                <SelectItem value="2">Peru</SelectItem>
+                <SelectItem value="3">Estados Unidos</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="estadoCivil">Estado Civil</Label>
-            <Input id="estadoCivil" placeholder="Ej: Soltero, Casado" />
+            <Select onValueChange={setTipoEstadoCivil} value={tipoEstadoCivil} >
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccione Estado Civil" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">Soltero</SelectItem>
+                <SelectItem value="2">Casado</SelectItem>
+                <SelectItem value="3">Divorciado</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Botones */}
           <div className="col-span-2">
             <div className="grid grid-cols-2 gap-4">
               <DialogRefreshProfile />
-              <ArrowRigthNacimiento />  
+              <ArrowRigthNacimiento handleClickAcceptProfile={handleGuardarSeccion} />  
               {/* <DialogAcceptProfile /> */}
             </div>
           </div>
