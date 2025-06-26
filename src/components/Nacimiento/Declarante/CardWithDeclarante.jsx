@@ -1,7 +1,6 @@
 import { Search } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,8 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { DialogAcceptProfile } from "../Menu/DialogAcceptProfile";
-import { DialogRefreshProfile } from "../Menu/DialogRefreshProfile";
+
+import { DialogRefreshProfile } from "@/components/Menu/DialogRefreshProfile";
 import {
   Select,
   SelectContent,
@@ -23,6 +22,7 @@ import { ArrowRigthNacimiento } from "./ArrowRigthNacimiento";
 import { useNacimientoStore } from "@/store/Nacimiento/nacimientoStore";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { DialogSearchDeclarante } from "./DialogSearchDeclarante";
 
 export const CardWithDeclarante = ({ irAlSiguienteTab }) => {
 
@@ -149,9 +149,7 @@ export const CardWithDeclarante = ({ irAlSiguienteTab }) => {
           </div>
 
           <div className="flex items-center h-20">
-            <Button>
-              <Search />
-            </Button>
+            <DialogSearchDeclarante />
           </div>
         </div>
 

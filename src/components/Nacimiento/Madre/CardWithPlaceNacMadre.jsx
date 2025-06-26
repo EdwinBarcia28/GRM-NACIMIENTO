@@ -11,8 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { DialogAcceptProfile } from "../Menu/DialogAcceptProfile";
-import { DialogRefreshProfile } from "../Menu/DialogRefreshProfile";
+import { DialogAcceptProfile } from "@/components/Menu/DialogAcceptProfile";
+import { DialogRefreshProfile } from "@/components/Menu/DialogRefreshProfile";
 import {
   Select,
   SelectContent,
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-export const CardWithDomicilioNac = () => {
+export const CardWithPlaceNacMadre = () => {
   const { dataUser } = useAuthStore();
 
   return (
@@ -44,14 +44,6 @@ export const CardWithDomicilioNac = () => {
 
         {/* Fila principal de formulario */}
         <div className="grid grid-cols-2 gap-4 mt-4">
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="calle">Calle del Nacido</Label>
-            <Input id="calle" />
-          </div>
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="numero">Numero</Label>
-            <Input id="numero" />
-          </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="pais">Pais</Label>
             <Input id="pais" />
@@ -80,5 +72,48 @@ export const CardWithDomicilioNac = () => {
       </CardContent>
     </Card>
 
+
+    // <Card>
+    //   <CardHeader>
+    //     <CardTitle>Gestion de Nacimientos</CardTitle>
+    //     <CardDescription>
+    //       En esta opcion se puede crear la Informacion del Usuario.
+    //     </CardDescription>
+    //   </CardHeader>
+    //   <CardContent>
+    //     <div className="grid grid-cols-2 gap-4">
+    //       <div className="flex flex-col col-span-2 space-y-1.5">
+    //         <Label htmlFor="nameDriver">Nombres</Label>
+    //         <Input
+    //           id="nameDriver"
+    //           placeholder="Ingrese del recien nacido"
+    //         />
+    //       </div>
+    //       <div className="flex flex-col col-span-2 space-y-1.5">
+    //         <Label htmlFor="lastNameDriver">Apellidos</Label>
+    //         <Input
+    //           placeholder="Ingrese los Apellidos del recien nacido"
+    //         />
+    //       </div>
+    //       <div className="flex flex-col col-span-2 space-y-1.5">
+    //         <Label htmlFor="birthDateDriver">Fecha de Nacimiento</Label>
+    //         <input
+    //           id="birthDateDriver"
+    //           name="birthDateDriver"
+    //           type="date"
+    //           className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+    //         />
+    //       </div>
+    //       <div className="col-span-2">
+    //         <div className="grid grid-cols-2 gap-4">
+    //           <DialogRefreshProfile
+    //           />
+    //           <DialogAcceptProfile
+    //           />
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </CardContent>
+    // </Card>
   );
 };

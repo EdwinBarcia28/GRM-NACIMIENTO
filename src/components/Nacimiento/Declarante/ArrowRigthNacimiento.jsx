@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { useSidebar } from "../ui/sidebar";
+import { useSidebar } from "@/components/ui/sidebar";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
+} from "@/components/ui/tooltip";
 
 export const ArrowRigthNacimiento = ({ handleClickAcceptProfile }) => {
   const { isMobile } = useSidebar();

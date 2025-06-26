@@ -1,22 +1,23 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-//import Login from "./page/Login";
+import Login from "./page/Login";
 import Menu from "./page/Menu";
 //import EstablishmentsSelect from "./page/BranchesSelect";
 //import "./App.css";
 import { ProtectedRoute } from "./page/ProtectedRoute";
-// import { RedirectAuth } from "./page/RedirectAuth ";
+import { RedirectAuth } from "./page/RedirectAuth";
+//import { RedirectAuth } from "./page/RedirectAuth ";
 // import { RedirectEstablishments } from "./page/RedirectEstablishments ";
 
 function App() {
   return (
     <>
       <Routes>
-        {/* <Route element={<RedirectAuth />}>
+         <Route element={<RedirectAuth />}>
           <Route path="/" element={<Login />} />
         </Route>
 
-        <Route element={<RedirectEstablishments />}>
+        {/*<Route element={<RedirectEstablishments />}>
           <Route path="/establecimiento/*" element={<EstablishmentsSelect />} />
         </Route> */}
 

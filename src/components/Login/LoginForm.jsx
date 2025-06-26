@@ -14,8 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ModalForgetPassword } from "./ModalForgetPassword";
-import { forgetPasswordRequest, loginRequest } from "@/services/login";
+import { loginRequest } from "@/services/login";
 import { cn } from "@/lib/utils";
 
 export function LoginForm({ className, ...props }) {
@@ -27,9 +26,6 @@ export function LoginForm({ className, ...props }) {
   const [passwordLogin, setPasswordLogin] = useState("");
   const [isLoadingLogin, setIsLoadingLogin] = useState(true);
 
-  const [forgetUserPassword, setForgetUserPassword] = useState("");
-  const [isLoadingForgetUserPassword, setIsLoadingForgetUserPassword] =
-    useState(true);
 
   const handleClickStartSession = async (event) => {
     event.preventDefault();
@@ -50,6 +46,7 @@ export function LoginForm({ className, ...props }) {
 
     const userLoginDto = { Username: userLogin, Password: passwordLogin };
 
+    console.log("userLoginDto", userLoginDto);
     const resLoginUser = await loginRequest(userLoginDto);
 
     if (resLoginUser === null) {
@@ -84,75 +81,15 @@ export function LoginForm({ className, ...props }) {
       } else if (resLoginUser.error == 0) {
         setToken("");
         setDataUser("");
-        setDataEstablishments("");
 
         setToken(resLoginUser.token);
         setDataUser(resLoginUser.user);
-        setDataEstablishments(resLoginUser.establishments);
-        navigate("/establecimiento");
+        navigate("/menu");
       }
     }
   };
 
-  const handleClickForgetPassword = async (event) => {
-    event.preventDefault();
-    if (forgetUserPassword === "") {
-      toast.error("¡Por favor, ingrese su usuario! 🙃", {
-        position: "top-right",
-        autoClose: 3000,
-      });
-      return;
-    }
-
-    const forgetPasswordDto = { Username: forgetUserPassword };
-
-    setIsLoadingForgetUserPassword(false);
-    const resForgetPassword = await forgetPasswordRequest(forgetPasswordDto);
-
-    if (resForgetPassword == null) {
-      setIsLoadingForgetUserPassword(true);
-      return toast.error(
-        "Comunicacion con el Servidor , se dio de forma interrumpida",
-        {
-          position: "top-right",
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        }
-      );
-    }
-
-    if (resForgetPassword != null) {
-      setIsLoadingForgetUserPassword(true);
-      if (resForgetPassword.error == 1) {
-        return toast.error(resForgetPassword.message, {
-          position: "top-right",
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      } else if (resForgetPassword.error == 0) {
-        return toast.success(resForgetPassword.message, {
-          position: "top-right",
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      }
-    }
-  };
+  
 
   const handleInputUserChange = (event) => {
     setUserLogin(event.target.value);
@@ -162,15 +99,12 @@ export function LoginForm({ className, ...props }) {
     setPasswordLogin(event.target.value);
   };
 
-  const handleInputForgetPasswordChange = (event) => {
-    setForgetUserPassword(event.target.value);
-  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Portal Factind</CardTitle>
+          <CardTitle className="text-2xl">Corporacion Registro Civil de Guayaquil</CardTitle>
           <CardDescription>
             Bienvenido! Por favor ingrese sus datos de Usuario.
           </CardDescription>

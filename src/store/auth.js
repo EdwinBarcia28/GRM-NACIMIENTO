@@ -67,12 +67,8 @@ import { persist } from "zustand/middleware";
 export const useAuthStore = create(
   persist(
     (set) => ({
-      token: "demo-token-123",
-      isAuth: true,
-      dataUser: {
-        nombreUsuario: "Edwin Barcia",
-        email: "edwin@example.com",
-      },
+      token: "",
+      dataUser: null,
       dataEstablishments: [
         { id: 1, nombre: "Corporacion Registro Civil" },
         { id: 2, nombre: "Sucursal Norte" },
@@ -98,6 +94,10 @@ export const useAuthStore = create(
           submenu: [] 
         },
       ],
+      isAuth: false,
+
+      
+      
       setToken: (token) => set(() => ({ token, isAuth: true })),
       setDataUser: (dataUser) => set(() => ({ dataUser })),
       setDataEstablishments: (dataEstablishments) =>

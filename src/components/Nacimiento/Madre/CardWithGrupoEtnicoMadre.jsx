@@ -11,8 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { DialogAcceptProfile } from "../Menu/DialogAcceptProfile";
-import { DialogRefreshProfile } from "../Menu/DialogRefreshProfile";
+import { DialogAcceptProfile } from "@/components/Menu/DialogAcceptProfile";
+import { DialogRefreshProfile } from "@/components/Menu/DialogRefreshProfile";
 import {
   Select,
   SelectContent,
@@ -22,7 +22,8 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-export const CardWithGrupoEtnico = () => {
+
+export const CardWithGrupoEtnicoMadre = () => {
   const { dataUser } = useAuthStore();
 
   return (
