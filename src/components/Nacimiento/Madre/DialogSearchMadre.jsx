@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/store/auth";
-import { useCallback, useState } from "react";
+import {  useState } from "react";
 import { toast } from "react-toastify";
 import { Loader, Search } from "lucide-react";
 import { AlertDialogHeader } from "@/components/ui/alert-dialog"
@@ -25,8 +25,9 @@ import { DataTableMadre} from "./DataTableMadre";
 import { searchDeclaranteRequest } from "@/services/nacimiento";
 
 export function DialogSearchMadre({valor}) {
-
   const { token } = useAuthStore();
+
+
   const [loadingMadre, setLoadingMadre] = useState(false);
   const [dataMadre, setDataMadre] = useState([]);
   const [filterMadre, setFilterMadre] = useState("");
@@ -41,9 +42,6 @@ export function DialogSearchMadre({valor}) {
     setSearchMadre(event.target.value);
   };
 
-  const handleClickSearchDataTableDeclarante = async (event) => {
-    searchDeclaranteDataTable(event);
-  };
 
   const handleBuscar = async (event) => {
     event.preventDefault();
@@ -70,10 +68,10 @@ export function DialogSearchMadre({valor}) {
             theme: "dark",
           }
         );
-      } else if (responseDriver !== null || responseDriver !== undefined) {
-        if (responseDriver.error === 1) {
-          setLoadingDriver(false);
-          return toast.error(responseDriver.message, {
+      } else if (responseMadre !== null || responseMadre !== undefined) {
+        if (responseMadre.error === 1) {
+          setLoadingMadre(false);
+          return toast.error(responseMadre.message, {
             position: "top-right",
             autoClose: 4000,
             hideProgressBar: false,
@@ -83,10 +81,10 @@ export function DialogSearchMadre({valor}) {
             progress: undefined,
             theme: "dark",
           });
-        } else if (responseDriver.error === 0) {
-          setDataDriver(responseDriver.drivers);
-          setLoadingDriver(false);
-          return toast.success(responseDriver.message, {
+        } else if (responseMadre.error === 0) {
+          setDataMadre(responseMadre.ciudadanos);
+          setLoadingMadre(false);
+          return toast.success(responseMadre.message, {
             position: "top-right",
             autoClose: 4000,
             hideProgressBar: false,
@@ -146,15 +144,18 @@ export function DialogSearchMadre({valor}) {
           </div>
           <div className="flex items-end">
             <Button
-              onClick={handleClickSearchDataTableDeclarante}
-              // disabled={loadingDeclarante}
+              onClick={handleBuscar}
+              disabled={loadingMadre}
             >
+              {loadingMadre? 
+                <Loader className="animate-spin" /> 
+                : 
                 <Search />
-              {/* {loadingDeclarante ? <Loader className="animate-spin" /> : <Search />} */}
+              } 
             </Button>
           </div>
         </div>
-        <DataTableMadre data />
+        <DataTableMadre data={dataMadre} />
       </DialogContent>
     </Dialog>
   );

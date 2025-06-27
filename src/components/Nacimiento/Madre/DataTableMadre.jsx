@@ -29,17 +29,21 @@ import {
 export function DataTableMadre({ data }) {
   const columns = [
     {
-      id: "actions",
-      headerLabel: "Acciones",
-      header: "Acciones",
+      id: "select",
+      header: () => <div className="text-center">Sel</div>,
       cell: ({ row }) => (
-        <div className="flex gap-2">
+        <div className="text-center">
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
         </div>
       ),
     },
     {
-      accessorKey: "names",
-      headerLabel: "Nombres",
+      accessorKey: "ciudadano",
+      headerLabel: "Ciudadano",
       header: ({ column }) => {
         return (
           <Button
