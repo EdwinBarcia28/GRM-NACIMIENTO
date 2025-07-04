@@ -20,11 +20,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-//import { infoDeclaranteRequest, searchDeclaranteRequest } from "@/services/Declarante";
+
 import { DataTableMadre} from "./DataTableMadre";
 import { searchDeclaranteRequest } from "@/services/nacimiento";
 
-export function DialogSearchMadre({valor}) {
+export function DialogSearchMadre({valor ,  onSelectMadre}) {
   const { token } = useAuthStore();
 
 
@@ -97,9 +97,11 @@ export function DialogSearchMadre({valor}) {
         }
       }
   }
+  
+  const [open, setOpen] = useState(false);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button disabled={valor} >
           <Search />
@@ -127,9 +129,9 @@ export function DialogSearchMadre({valor}) {
                 <SelectValue placeholder="Seleccione un de Filtro" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">Nombres</SelectItem>
-                <SelectItem value="2">Apellido</SelectItem>
-                <SelectItem value="3">Identificacion</SelectItem>
+                <SelectItem value="1">Identificacion</SelectItem>
+                <SelectItem value="2">Nombres</SelectItem>
+                <SelectItem value="3">Apellido</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -155,7 +157,11 @@ export function DialogSearchMadre({valor}) {
             </Button>
           </div>
         </div>
-        <DataTableMadre data={dataMadre} />
+        <DataTableMadre data={dataMadre}    
+                onSelectMadre={(madre) => {
+                  onSelectMadre(madre);
+                  setOpen(false); 
+                }} />
       </DialogContent>
     </Dialog>
   );

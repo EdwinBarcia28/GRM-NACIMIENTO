@@ -24,9 +24,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { Checkbox } from "@/components/ui/checkbox";
 
 
-export function DataTableMadre({ data }) {
+export function DataTableMadre({ data , onSelectMadre}) {
+
+  const [rowSelection, setRowSelection] = useState({});
+  
   const columns = [
     {
       id: "select",
@@ -42,39 +46,7 @@ export function DataTableMadre({ data }) {
       ),
     },
     {
-      accessorKey: "ciudadano",
-      headerLabel: "Ciudadano",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Nombres
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => <div>{row.getValue("names")}</div>,
-    },
-    {
-      accessorKey: "lastNames",
-      headerLabel: "Apellidos",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Apellidos
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => <div>{row.getValue("lastNames")}</div>,
-    },
-    {
-      accessorKey: "identification",
+      accessorKey: "identificacion",
       headerLabel: "Identificación",
       header: ({ column }) => {
         return (
@@ -87,11 +59,27 @@ export function DataTableMadre({ data }) {
           </Button>
         );
       },
-      cell: ({ row }) => <div>{row.getValue("identification")}</div>,
+      cell: ({ row }) => <div>{row.getValue("identificacion")}</div>,
     },
     {
-      accessorKey: "typeIdentification",
-      headerLabel: "Tipo de Identificación",
+      accessorKey: "ciudadano",
+      headerLabel: "Ciudadano",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Ciudadano
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => <div>{row.getValue("ciudadano")}</div>,
+    },
+    {
+      accessorKey: "sexo",
+      headerLabel: "Sexo",
       header: ({ column }) => {
         return (
           <Button
@@ -103,10 +91,10 @@ export function DataTableMadre({ data }) {
           </Button>
         );
       },
-      cell: ({ row }) => <div>{row.getValue("typeIdentification")}</div>,
+      cell: ({ row }) => <div>{row.getValue("sexo")}</div>,
     },
     {
-      accessorKey: "birthdate",
+      accessorKey: "fechaNacimiento",
       headerLabel: "Fecha de Nacimiento",
       header: ({ column }) => {
         return (
@@ -119,30 +107,55 @@ export function DataTableMadre({ data }) {
           </Button>
         );
       },
-      cell: ({ row }) => <div>{row.getValue("birthdate")}</div>,
+      cell: ({ row }) => <div>{row.getValue("fechaNacimiento")}</div>,
     },
     {
-      accessorKey: "state",
-      headerLabel: "Estados",
+      accessorKey: "nacionalidad",
+      headerLabel: "Nacionalidad",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Estados
+            Nacionalidad
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
       },
-      cell: ({ row }) => <div>{row.getValue("state")}</div>,
+      cell: ({ row }) => <div>{row.getValue("nacionalidad")}</div>,
+    },
+    {
+      accessorKey: "estadoCivil",
+      headerLabel: "Estado Civil",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Estado Civil
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => <div>{row.getValue("estadoCivil")}</div>,
     },
   ];
+
+  const handleSeleccionar = () => {
+    const selectedRow = table.getSelectedRowModel().rows[0];
+    if (selectedRow) {
+      console.log("Fila seleccionada:", selectedRow.original);
+      onSelectMadre(selectedRow.original); // Envía el dato al padre
+
+    }
+  }
 
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
-  const [rowSelection, setRowSelection] = useState({});
+  //const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
@@ -247,26 +260,11 @@ export function DataTableMadre({ data }) {
             </div>
             <div className="flex items-center justify-between flex-wrap py-4">
               <div className="flex-1 text-sm text-muted-foreground">
-                Total de Conductores : {data?.length}
+                Total de Coincidencias : {data?.length}
               </div>
-              <div className="flex items-center space-x-2 mt-2 sm:mt-0">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                >
-                  Anterior
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                >
-                  Siguiente
-                </Button>
-              </div>
+            </div>
+             <div className="flex justify-end mt-4">
+              <Button onClick={handleSeleccionar}>Guardar</Button>
             </div>
           </div>
         </>

@@ -18,16 +18,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useNacimientoStore } from "@/store/Nacimiento/nacimientoStore";
+//import { useNacimientoStore } from "@/store/Nacimiento/nacimientoStore";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { DialogSearchMadre } from "./DialogSearchMadre";
 import { ArrowRigthNacimientoMadre } from "./ArrowRigthNacimientoMadre";
+import { estadocivilRequest, nacionalidadRequest, sexoRequest } from "@/services/nacimiento";
+//import { useAuthStore } from "@/store/auth";
+import { useNacimientoStore } from "@/store/Nacimiento/nacimientoStore";
 
 export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
 
   const { guardarDatosDeclarante } = useNacimientoStore();
-  const { datosDeclarante } = useNacimientoStore();
+  //const { datosDeclarante } = useNacimientoStore();
+
+  //const { token } = useAuthStore();
  
 
   const [llenado, setLlenado] = useState("bu");
@@ -46,10 +51,11 @@ export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
     }
   },[llenado])
 
+  // ACTIVAR Y DESCATIVAR CAMPOS Y BOTONES
+
   const camposDesactivados = llenado === "bu" ? true : false;
   const botonDesactivados = llenado === "bu" ? false : true;
 
-  console.log("camposDesactivados", botonDesactivados);
 
   const [apellidos, setApellidos] = useState("");
   const [nombres, setNombres] = useState("");
@@ -61,8 +67,13 @@ export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
     return hoy.toISOString().split("T")[0];
   });
 
+  const [dataSexo, setDataSexo] = useState([]);
   const [tipoSexo, setTipoSexo] = useState("1");
+
+  const [dataNacionalidad, setDataNacionalidad] = useState([]);
   const [tipoNacionalidad, setTipoNacionalidad] = useState("1");
+
+  const [dataEstadoCivil, setDataEstadoCivil] = useState([]);
   const [tipoEstadoCivil, setTipoEstadoCivil] = useState("1");
 
   // REGION DE ONCHANGE PARA LOS INPUTS
@@ -110,7 +121,6 @@ export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
     }
 
     guardarDatosDeclarante({
-      tipoDeclarante,
       apellidos,
       nombres,
       tipoDocumento,
@@ -123,6 +133,142 @@ export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
 
     irAlSiguienteTab();
   };
+
+  const fetchDataSexo = useCallback(async (token) => {
+    try {
+      const responseSexo = await sexoRequest(token);
+      if (responseSexo == null) {
+        return toast.error(
+          "Comunicacion con el Servidor , se dio de forma interrumpida",
+          {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          }
+        );
+      } else if (responseSexo !== null) {
+        if (responseSexo.error == 1) {
+          return toast.error(responseSexo.message, {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else if (responseSexo.error == 0) {
+          setDataSexo(responseSexo.sexos);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
+
+  const fetchDataNacionalidad = useCallback(async (token) => {
+    try {
+      const responseNacionalidad = await nacionalidadRequest(token);
+      if (responseNacionalidad == null) {
+        return toast.error(
+          "Comunicacion con el Servidor , se dio de forma interrumpida",
+          {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          }
+        );
+      } else if (responseNacionalidad !== null) {
+        if (responseNacionalidad.error == 1) {
+          return toast.error(responseNacionalidad.message, {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else if (responseNacionalidad.error == 0) {
+          setDataNacionalidad(responseNacionalidad.nacionalidades);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
+
+  const fetchDataEstadoCivil = useCallback(async (token) => {
+    try {
+      const responseEstadoCivil = await estadocivilRequest(token);
+      if (responseEstadoCivil == null) {
+        return toast.error(
+          "Comunicacion con el Servidor , se dio de forma interrumpida",
+          {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          }
+        );
+      } else if (responseEstadoCivil !== null) {
+        if (responseEstadoCivil.error == 1) {
+          return toast.error(responseEstadoCivil.message, {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else if (responseEstadoCivil.error == 0) {
+          setDataEstadoCivil(responseEstadoCivil.estados);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchDataSexo();
+    fetchDataNacionalidad();
+    fetchDataEstadoCivil();
+  }, [fetchDataSexo,fetchDataNacionalidad,fetchDataEstadoCivil]);
+
+
+  const handleSeleccionMadre = (madre) => {
+    const formatoCorrecto = madre.fechaNacimiento ? madre.fechaNacimiento.split("/").reverse().join("-") : "";
+
+    setFechaNacimiento(formatoCorrecto);
+    setApellidos(madre.ciudadano);
+    setNombres(madre.ciudadano);
+    setTipoDocumento("1");
+    setNumeroDocumento(madre.identificacion);
+    setTipoSexo(String(madre.idSexo));
+    setTipoNacionalidad(String(madre.idNacionalidad));
+    setTipoEstadoCivil(String(madre.idEstado));
+  };
+
+
 
   return (
     <Card>
@@ -154,7 +300,7 @@ export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
           </div>
 
           <div className="flex items-center h-20">
-            <DialogSearchMadre valor={botonDesactivados}/>
+            <DialogSearchMadre valor={botonDesactivados} onSelectMadre={handleSeleccionMadre}/>
           </div>
         </div>
         
@@ -168,7 +314,7 @@ export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
             <Label htmlFor="apellidos">Apellidos</Label>
             <Input 
               placeholder="Ingrese los apellidos"
-              value={apellidos} 
+              value={apellidos ?? ""} 
               onChange={handleApellidosChange}
               disabled={camposDesactivados}
               />
@@ -177,14 +323,14 @@ export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
             <Label htmlFor="nombres">Nombres</Label>
             <Input 
               placeholder="Ingrese los nombres" 
-              value={nombres}
+              value={nombres ?? ""}
               onChange={handleNombresChange}
               disabled={camposDesactivados}
               />
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="tipoDocumento">Tipo de Documento</Label>
-            <Select onValueChange={setTipoDocumento} value={tipoDocumento} disabled={camposDesactivados}>
+            <Select onValueChange={setTipoDocumento} value={tipoDocumento ?? "1" } disabled={camposDesactivados}>
               <SelectTrigger>
                 <SelectValue placeholder="Seleccione un Tipo de Documento" />
               </SelectTrigger>
@@ -199,7 +345,7 @@ export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
             <Label htmlFor="numeroDocumento">Número de Documento</Label>
             <Input 
               placeholder="Ingrese número de documento"
-              value={numeroDocumento}
+              value={numeroDocumento ?? ""}
               onChange={handleNumeroDocumentoChange} 
               disabled={camposDesactivados}/>
           </div>
@@ -222,9 +368,11 @@ export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
                 <SelectValue placeholder="Seleccione Sexo" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">Masculino</SelectItem>
-                <SelectItem value="2">Femenino</SelectItem>
-                <SelectItem value="3">Otros</SelectItem>
+                {dataSexo.map((element) => (
+                  <SelectItem key={`${element.codigo}`} value={`${element.codigo}`}>
+                    {element.descripcion}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -235,9 +383,11 @@ export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
                 <SelectValue placeholder="Seleccione Nacionalidad" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">Ecuador</SelectItem>
-                <SelectItem value="2">Peru</SelectItem>
-                <SelectItem value="3">Estados Unidos</SelectItem>
+                {dataNacionalidad.map((element) => (
+                  <SelectItem key={`${element.codigo}`} value={`${element.codigo}`}>
+                    {element.nacionalidad}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -248,16 +398,18 @@ export const CardWithInfoMadre = ({ irAlSiguienteTab }) => {
                 <SelectValue placeholder="Seleccione Estado Civil" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">Soltero</SelectItem>
-                <SelectItem value="2">Casado</SelectItem>
-                <SelectItem value="3">Divorciado</SelectItem>
+                {dataEstadoCivil.map((element) => (
+                  <SelectItem key={`${element.codigo}`} value={`${element.codigo}`}>
+                    {element.descripcion}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
 
           {/* Botones */}
           <div className="col-span-2">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4"> 
               <DialogRefreshProfile />
               <ArrowRigthNacimientoMadre handleClickAcceptProfile={handleGuardarSeccion} />  
               {/* <DialogAcceptProfile /> */}
